@@ -1,0 +1,25 @@
+{
+  "name": "reverse-type",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "files": [
+    "dist/**"
+  ],
+  "repository": "https://github.com/wilsonzlin/reverse-type",
+  "author": "Wilson Lin <npm@wilsonl.in>",
+  "license": "ISC",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
+    "format": "prettier --write 'src/**/*.ts'",
+    "prepublishOnly": "prettier --check 'src/**/*.ts' && npm run build"
+  },
+  "dependencies": {
+    "prettier": "2.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.5",
+    "@types/prettier": "^2.3.0",
+    "typescript": "^4.3.4"
+  }
+}
