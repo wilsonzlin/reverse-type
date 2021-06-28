@@ -8,34 +8,39 @@ const tsProp = (raw: string) =>
 
 export const generateTypeDefinition = (val: unknown): string => {
   switch (typeof val) {
-    case "undefined":
+    case "bigint":
     case "boolean":
+    case "function":
     case "number":
     case "string":
-    case "function":
     case "symbol":
-    case "bigint":
+    case "undefined":
       return typeof val;
     case "object":
-      if (val == null) {
+      if (val === null) {
         return "null";
       }
       if (Array.isArray(val)) {
-        if (val.length == 0) {
+        if (val.length === 0) {
           console.warn(`Found empty array`);
           return `Array<unknown>`;
         }
         return `Array<${generateTypeDefinition(val[0])}>`;
       }
-      if (Object.getPrototypeOf(val) == Object.prototype) {
-        return [
-          "{",
-          ...Object.entries(val).map(
-            ([prop, val]) => `${tsProp(prop)}: ${generateTypeDefinition(val)};`
-          ),
-          "}",
-          "",
-        ].join("\n");
+      const proto = Object.getPrototypeOf(val);
+      switch (proto) {
+        case Object.prototype:
+        case null:
+          return [
+            "{",
+            ...Object.entries(val).map(
+              ([prop, val]) =>
+                `${tsProp(prop)}: ${generateTypeDefinition(val)};`
+            ),
+            "}",
+          ].join("\n");
+        default:
+          return proto.constructor.name;
       }
     // Fall through.
     default:
@@ -48,7 +53,9 @@ export const generateTypeDefinition = (val: unknown): string => {
 if (require.main == module) {
   console.log(
     prettier.format(
-      generateTypeDefinition(JSON.parse(fs.readFileSync(0, "utf-8"))),
+      `type MyCustomType = ${generateTypeDefinition(
+        JSON.parse(fs.readFileSync(0, "utf-8"))
+      )}`,
       { parser: "typescript" }
     )
   );
