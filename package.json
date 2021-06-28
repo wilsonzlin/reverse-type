@@ -2,6 +2,7 @@
   "name": "reverse-type",
   "version": "0.0.1",
   "main": "dist/main.js",
+  "bin": "dist/main.js",
   "files": [
     "dist/**"
   ],
@@ -9,7 +10,7 @@
   "author": "Wilson Lin <npm@wilsonl.in>",
   "license": "ISC",
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && chmod +x ./dist/main.js",
     "clean": "rm -rf dist",
     "format": "prettier --write 'src/**/*.ts'",
     "prepublishOnly": "prettier --check 'src/**/*.ts' && npm run build"
