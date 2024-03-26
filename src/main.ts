@@ -27,6 +27,8 @@ type Type = {
   array?: Type;
 };
 
+const UNDEFINED: Type = { simples: new Set(["undefined"]) };
+
 const mergeObjectMembers = (
   a: ObjectMembers | undefined,
   b: ObjectMembers | undefined
@@ -41,7 +43,7 @@ const mergeObjectMembers = (
   const bKeys = Object.keys(b);
   const merged: Record<string, Type> = {};
   for (const prop of new Set([...aKeys, ...bKeys])) {
-    const m = mergeTypes(a[prop], b[prop]);
+    const m = mergeTypes(a[prop] ?? UNDEFINED, b[prop] ?? UNDEFINED);
     if (m) {
       merged[prop] = m;
     }
