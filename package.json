@@ -13,10 +13,11 @@
   "scripts": {
     "build": "npm run clean && tsc && chmod +x ./dist/main.js",
     "clean": "rm -rf dist",
-    "format": "prettier --write 'src/**/*.ts'",
-    "prepublishOnly": "prettier --check 'src/**/*.ts' && npm run build"
+    "format": "prettier --write src",
+    "prepublishOnly": "prettier --check src && npm run build"
   },
   "dependencies": {
+    "@xtjs/lib": "^0.53.2",
     "prettier": "2.3.2"
   },
   "devDependencies": {
